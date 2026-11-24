@@ -52,17 +52,17 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
-;; --- Portado desde nvim-rock ---
-;; evil-snipe usa s/t/f; se desactiva para que s/t queden libres para Dvorak.
+;; --- Ported from nvim-rock ---
+;; evil-snipe uses s/t/f; disabled so s/t are free for Dvorak.
 (package! evil-snipe :disable t)
-;; Harpoon (marcar archivos y saltar a ellos), como harpoon en nvim.
+;; Harpoon (mark files and jump to them), like harpoon in nvim.
 (package! harpoon)
-;; Mover líneas/selección arriba y abajo (equivale a :m .+1 / :m .-2).
+;; Move lines/selection up and down (equivalent to :m .+1 / :m .-2).
 (package! drag-stuff)
 
-;; Tema Sonokai (port a Emacs de sainnhe/sonokai)
+;; Sonokai theme (Emacs port of sainnhe/sonokai)
 (package! sonokai-theme
   :recipe (:host github :repo "arekisannda/sonokai-emacs"))
 
-;; Gleam (Doom no trae módulo para Gleam)
+;; Gleam (Doom has no Gleam module)
 (package! gleam-ts-mode)

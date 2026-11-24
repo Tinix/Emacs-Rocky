@@ -23,7 +23,7 @@
 ;;
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
-;; JetBrains Mono (instalada en el sistema).
+;; JetBrains Mono (installed system-wide).
 (setq doom-font (font-spec :family "JetBrains Mono" :size 15.0)
       doom-big-font (font-spec :family "JetBrains Mono" :size 22.0)
       doom-symbol-font (font-spec :family "Symbols Nerd Font Mono"))
@@ -36,7 +36,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-batman-arkham)   ; otros: 'sonokai, 'doom-one
+(setq doom-theme 'doom-batman-arkham)   ; others: 'sonokai, 'doom-one
 ;; Specify both a dark and light theme, like so and Doom will choose which one
 ;; to load based on your system light/dark setting:
 ;;
@@ -90,36 +90,36 @@
 ;; they are implemented.
 
 ;;; ------------------------------------------------------------------
-;;; Keymaps portados desde github.com/Tinix/nvim-rock (lua/config/keymaps.lua)
+;;; Keymaps ported from github.com/Tinix/nvim-rock (lua/config/keymaps.lua)
 ;;; ------------------------------------------------------------------
 
-;; Movimiento Dvorak: h t n s = izquierda abajo arriba derecha
-;; (igual que en nvim: reemplaza t, n y s; j/k/l siguen funcionando).
+;; Dvorak movement: h t n s = left down up right
+;; (same as in nvim: overrides t, n and s; j/k/l still work).
 (map! :nvm "h" #'evil-backward-char
       :nvm "t" #'evil-next-line
       :nvm "n" #'evil-previous-line
       :nvm "s" #'evil-forward-char)
 
-;; Guardar con C-s
+;; Save with C-s
 (map! :n "C-s" #'save-buffer)
 
-;; Moverse entre ventanas con C-h/j/k/l
+;; Move between windows with C-h/j/k/l
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right)
 
-;; Redimensionar ventanas con C-flechas
+;; Resize windows with C-arrows
 (map! :n "C-<up>"    (cmd! (evil-window-increase-height 2))
       :n "C-<down>"  (cmd! (evil-window-decrease-height 2))
       :n "C-<left>"  (cmd! (evil-window-decrease-width 2))
       :n "C-<right>" (cmd! (evil-window-increase-width 2)))
 
-;; Buffer siguiente/anterior con L / H
+;; Next/previous buffer with L / H
 (map! :n "L" #'next-buffer
       :n "H" #'previous-buffer)
 
-;; Mover línea o selección: M-S-j/k, C-S-j/k y la variante Dvorak M-S-t/n
+;; Move line or selection: M-S-j/k, C-S-j/k and the Dvorak variant M-S-t/n
 (map! :nv "M-J"   #'drag-stuff-down
       :nv "M-K"   #'drag-stuff-up
       :nv "C-S-j" #'drag-stuff-down
@@ -127,67 +127,68 @@
       :nv "M-T"   #'drag-stuff-down
       :nv "M-N"   #'drag-stuff-up)
 
-;; Pegar en visual sin reemplazar el registro (vnoremap p "_dP)
+;; Paste in visual mode without replacing the register (vnoremap p "_dP)
 (setq evil-kill-on-visual-paste nil)
-;; (< y > en visual ya conservan la selección en Doom.)
+;; (< and > in visual mode already keep the selection in Doom.)
 
-;; Árbol de archivos con C-e (NvimTree -> treemacs)
+;; File tree with C-e (NvimTree -> treemacs)
 (map! :n "C-e" #'+treemacs/toggle)
 
-;; SPC f f como Telescope find_files: busca por nombre en todo el proyecto
-;; (o recursivamente desde la carpeta actual si no hay proyecto).
-;; El explorador clásico de Doom sigue en SPC . (find-file).
-(defun +my/find-file-proyecto ()
-  "Buscar un archivo por nombre en todo el proyecto actual."
+;; SPC f f like Telescope find_files: search by name across the whole project
+;; (or recursively from the current directory if there is no project).
+;; Doom's classic file browser is still on SPC . (find-file).
+(defun +my/find-file-in-project ()
+  "Find a file by name in the current project."
   (interactive)
   (doom-project-find-file (or (doom-project-root) default-directory)))
 
-;; SPC y copia al portapapeles del sistema (como "+y en nvim), para pegar
-;; en el navegador u otra app. En visual copia la selección (ej.: gg V G SPC y);
-;; en normal funciona como operador: SPC y y (línea), SPC y i w (palabra)...
-(evil-define-operator +my/copiar-portapapeles (beg end type)
-  "Copiar el texto al portapapeles del sistema."
+;; SPC y copies to the system clipboard (like "+y in nvim), to paste into
+;; the browser or another app. In visual mode it copies the selection
+;; (e.g. gg V G SPC y); in normal mode it works as an operator:
+;; SPC y y (line), SPC y i w (word)...
+(evil-define-operator +my/copy-to-clipboard (beg end type)
+  "Copy the text to the system clipboard."
   :move-point nil
   :repeat nil
   (evil-yank beg end type ?+)
-  (message "Copiado al portapapeles"))
+  (message "Copied to clipboard"))
 
-;; Líder
+;; Leader
 (map! :leader
-      ;; Salir sin guardar (SPC q queda como el menú de Doom; SPC q q sale)
-      :desc "Salir de todo sin guardar" "Q" #'evil-quit-all-with-error-code
-      :desc "Copiar al portapapeles"   "y" #'+my/copiar-portapapeles
+      ;; Quit without saving (SPC q stays as Doom's menu; SPC q q quits)
+      :desc "Quit all without saving" "Q" #'evil-quit-all-with-error-code
+      :desc "Copy to clipboard"       "y" #'+my/copy-to-clipboard
 
       ;; Telescope -> vertico/consult
       (:prefix "f"
-       :desc "Buscar archivo en el proyecto" "f" #'+my/find-file-proyecto
-       :desc "Buscar texto (live grep)" "g" #'+default/search-project
-       :desc "Buscar buffers"           "b" #'consult-buffer
-       :desc "Buscar ayuda"             "h" #'describe-symbol)
+       :desc "Find file in project"   "f" #'+my/find-file-in-project
+       :desc "Search text (live grep)" "g" #'+default/search-project
+       :desc "Search buffers"         "b" #'consult-buffer
+       :desc "Search help"            "h" #'describe-symbol)
 
-      ;; Git (fugitive -> magit). SPC g c c = commit (ya existe en Doom)
+      ;; Git (fugitive -> magit). SPC g c c = commit (already in Doom)
       (:prefix "g"
        :desc "Git status" "s" #'magit-status
        :desc "Git push"   "p" #'magit-push-current-to-upstream
        :desc "Git pull"   "P" #'magit-pull-from-upstream
        :desc "Git diff"   "d" #'magit-diff-buffer-file)
 
-      ;; Harpoon (en SPC j porque SPC h es la ayuda de Doom)
+      ;; Harpoon (on SPC j because SPC h is Doom's help)
       (:prefix ("j" . "harpoon")
-       :desc "Agregar archivo" "a" #'harpoon-add-file
-       :desc "Menú"            "m" #'harpoon-toggle-quick-menu
-       :desc "Archivo 1"       "1" #'harpoon-go-to-1
-       :desc "Archivo 2"       "2" #'harpoon-go-to-2
-       :desc "Archivo 3"       "3" #'harpoon-go-to-3
-       :desc "Archivo 4"       "4" #'harpoon-go-to-4))
+       :desc "Add file" "a" #'harpoon-add-file
+       :desc "Menu"     "m" #'harpoon-toggle-quick-menu
+       :desc "File 1"   "1" #'harpoon-go-to-1
+       :desc "File 2"   "2" #'harpoon-go-to-2
+       :desc "File 3"   "3" #'harpoon-go-to-3
+       :desc "File 4"   "4" #'harpoon-go-to-4))
 
 ;;; ------------------------------------------------------------------
-;;; Dvorak en magit, dired y treemacs
-;;; t = abajo, n = arriba. Lo que estaba en t/n se mueve a j/k u otra tecla.
+;;; Dvorak in magit, dired and treemacs
+;;; t = down, n = up. Whatever was on t/n moves to j/k or another key.
 ;;; ------------------------------------------------------------------
 
-;; Magit: s sigue siendo "stage" (allí no hay movimiento horizontal).
-;; t (tag) pasa a j, y n (buscar siguiente) pasa a k.
+;; Magit: s is still "stage" (there is no horizontal movement there).
+;; t (tag) moves to j, and n (search next) moves to k.
 (defadvice! +dvorak--magit-a (&rest _)
   :after #'evil-collection-magit-setup
   (map! :map magit-mode-map
@@ -205,15 +206,15 @@
         :n  "M-t" #'git-rebase-move-line-down
         :n  "M-n" #'git-rebase-move-line-up))
 
-;; Dired: t/n recorren los archivos (j/k siguen funcionando).
+;; Dired: t/n move through the files (j/k still work).
 (defadvice! +dvorak--dired-a (&rest _)
   :after #'evil-collection-dired-setup
   (map! :map dired-mode-map
         :n "t" #'dired-next-line
         :n "n" #'dired-previous-line))
 
-;; Treemacs: t/n abajo/arriba, s abre o expande (como l) y h colapsa.
-;; El prefijo de opciones "t ..." (th, tf, tg...) pasa a "T ...".
+;; Treemacs: t/n down/up, s opens or expands (like l) and h collapses.
+;; The options prefix "t ..." (th, tf, tg...) moves to "T ...".
 (after! treemacs-evil
   (define-key evil-treemacs-state-map (kbd "t") nil)
   (define-key evil-treemacs-state-map (kbd "T") treemacs-toggle-map)
@@ -225,44 +226,44 @@
   (define-key evil-treemacs-state-map (kbd "M-T") #'treemacs-next-line-other-window)
   (define-key evil-treemacs-state-map (kbd "M-N") #'treemacs-previous-line-other-window))
 
-;; C-w salta a la siguiente ventana (treemacs <-> código <-> ...), en ciclo.
-;; Reemplaza el prefijo C-w de evil; los comandos de ventana siguen en SPC w.
-;; En modo insert C-w sigue borrando la palabra anterior.
+;; C-w jumps to the next window (treemacs <-> code <-> ...), cycling.
+;; Replaces evil's C-w prefix; window commands are still on SPC w.
+;; In insert mode C-w still deletes the previous word.
 (map! :nvm "C-w" #'other-window)
 (after! treemacs
-  ;; Doom hace que other-window salte treemacs; aquí se incluye en el ciclo.
+  ;; Doom makes other-window skip treemacs; here it is part of the cycle.
   (setq treemacs-is-never-other-window nil)
-  ;; Un solo clic abre archivos y expande/colapsa carpetas (como nvim-tree).
+  ;; A single click opens files and expands/collapses folders (like nvim-tree).
   (define-key treemacs-mode-map [mouse-1] #'treemacs-single-click-expand-action))
 (after! treemacs-evil
   (define-key evil-treemacs-state-map (kbd "C-w") #'other-window)
-  ;; C-e también esconde treemacs estando dentro de él
+  ;; C-e also hides treemacs from inside it
   (define-key evil-treemacs-state-map (kbd "C-e") #'+treemacs/toggle)
-  ;; Estilo nvim-tree: a = crear (termina en / para carpeta), r = renombrar
-  (define-key evil-treemacs-state-map (kbd "a") #'+my/treemacs-crear)
+  ;; nvim-tree style: a = create (end with / for a folder), r = rename
+  (define-key evil-treemacs-state-map (kbd "a") #'+my/treemacs-create)
   (define-key evil-treemacs-state-map (kbd "r") #'treemacs-rename-file))
 
-(defun +my/treemacs-crear ()
-  "Crear archivo o carpeta como en nvim-tree.
-Si el nombre termina en / se crea una carpeta; si no, un archivo.
-Se pueden crear subcarpetas intermedias: lib/nuevo/archivo.ex"
+(defun +my/treemacs-create ()
+  "Create a file or folder like in nvim-tree.
+If the name ends with / a folder is created; otherwise, a file.
+Intermediate folders can be created too: lib/new/file.ex"
   (interactive)
   (require 'treemacs-file-management)
   (let* ((curr (treemacs--select-file-from-btn
-                (treemacs-current-button) "Crear en: " :dir-only))
+                (treemacs-current-button) "Create in: " :dir-only))
          (dir (treemacs--add-trailing-slash
                (if (file-directory-p curr) curr (treemacs--parent-dir curr))))
-         (input (read-file-name "Crear (termina en / para carpeta): " dir)))
+         (input (read-file-name "Create (end with / for a folder): " dir)))
     (cl-letf (((symbol-function 'treemacs--select-file-from-btn) (lambda (&rest _) curr))
               ((symbol-function 'read-file-name) (lambda (&rest _) input)))
       (treemacs--create-file/dir (not (string-suffix-p "/" input))))))
 
-;; Abrir treemacs automáticamente al iniciar Emacs.
-;; - Si se inicia dentro de un proyecto, muestra ese proyecto.
-;; - Si no (por ejemplo desde ~), abre la última sesión de treemacs, si hay una.
-;; - Si se abrió un archivo (emacs archivo.ex), el foco vuelve a ese archivo.
+;; Open treemacs automatically when Emacs starts.
+;; - If started inside a project, show that project.
+;; - Otherwise (e.g. from ~), open the last treemacs session, if there is one.
+;; - If a file was opened (emacs file.ex), focus goes back to that file.
 (add-hook! 'window-setup-hook
-  (defun +my/treemacs-al-inicio-h ()
+  (defun +my/treemacs-on-startup-h ()
     (unless (daemonp)
       (require 'treemacs)
       (let ((win (selected-window))
@@ -275,11 +276,11 @@ Se pueden crear subcarpetas intermedias: lib/nuevo/archivo.ex"
           (select-window win))))))
 
 ;;; ------------------------------------------------------------------
-;;; Barra de abajo clásica de Emacs (sin doom-modeline) + a la derecha:
-;;; rama de git y versión del lenguaje.
+;;; Classic Emacs bottom bar (no doom-modeline) + on the right:
+;;; git branch and language version.
 ;;; ------------------------------------------------------------------
 
-(defvar +my/version-comandos
+(defvar +my/version-commands
   '(((elixir-mode elixir-ts-mode heex-ts-mode) "elixir" ("--version") "Elixir \\([0-9.]+\\)" "Elixir")
     ((python-mode python-ts-mode)              "python3" ("--version") "Python \\([0-9.]+\\)" "Python")
     ((ruby-mode ruby-ts-mode)                  "ruby"   ("--version") "ruby \\([0-9.]+\\)" "Ruby")
@@ -290,30 +291,30 @@ Se pueden crear subcarpetas intermedias: lib/nuevo/archivo.ex"
     ((erlang-mode erlang-ts-mode)              "erl"    ("-noshell" "-eval" "io:format(\"OTP ~s\", [erlang:system_info(otp_release)]), halt().") "OTP \\([0-9.]+\\)" "Erlang/OTP")
     ((zig-mode zig-ts-mode)                    "zig"    ("version")   "\\([0-9][0-9.]*\\)" "Zig")
     ((sh-mode bash-ts-mode)                    "bash"   ("--version") "version \\([0-9.]+\\)" "Bash"))
-  "Modos, programa, argumentos, regexp de la versión y etiqueta.")
+  "Modes, program, arguments, version regexp and label.")
 
 (defvar +my/version-cache (make-hash-table :test 'equal)
-  "Versión por (programa . carpeta del proyecto); se calcula una vez.")
+  "Version per (program . project directory); computed once.")
 
-(defun +my/version-lenguaje ()
-  "Versión del lenguaje del buffer actual, p. ej. \"Elixir 1.16.2\".
-Se obtiene en segundo plano (respeta .tool-versions de asdf)."
+(defun +my/language-version ()
+  "Language version of the current buffer, e.g. \"Elixir 1.16.2\".
+Fetched in the background (respects asdf's .tool-versions)."
   (if (derived-mode-p 'emacs-lisp-mode 'lisp-interaction-mode)
       (format "Emacs %s" emacs-version)
     (when-let* ((spec (cl-find-if (lambda (s) (apply #'derived-mode-p (car s)))
-                                  +my/version-comandos)))
+                                  +my/version-commands)))
       (pcase-let* ((`(,_ ,prog ,args ,re ,label) spec)
                    (key (cons prog (or (doom-project-root) default-directory)))
                    (v (gethash key +my/version-cache)))
         (cond
          ((stringp v) (unless (string-empty-p v) v))
-         ((eq v 'pendiente) nil)
+         ((eq v 'pending) nil)
          ((not (executable-find prog)) (puthash key "" +my/version-cache) nil)
          (t
-          (puthash key 'pendiente +my/version-cache)
-          (let ((buf (generate-new-buffer " *version-lenguaje*")))
+          (puthash key 'pending +my/version-cache)
+          (let ((buf (generate-new-buffer " *language-version*")))
             (make-process
-             :name "version-lenguaje" :buffer buf :command (cons prog args)
+             :name "language-version" :buffer buf :command (cons prog args)
              :noquery t :connection-type 'pipe
              :sentinel
              (lambda (p _)
@@ -327,52 +328,52 @@ Se obtiene en segundo plano (respeta .tool-versions de asdf)."
                    (force-mode-line-update t))))))
           nil))))))
 
-(defun +my/rama-git ()
-  "Rama de git del buffer actual (tomada de `vc-mode')."
+(defun +my/git-branch ()
+  "Git branch of the current buffer (taken from `vc-mode')."
   (when (and vc-mode (stringp vc-mode))
     (let ((s (substring-no-properties vc-mode)))
       (when (string-match "\\`\\s-*[A-Za-z]+[-:@!?]\\(.+\\)\\'" s)
         (match-string 1 s)))))
 
-;; Lado derecho: lenguaje (con versión si se conoce) y rama de git.
-(defun +my/mode-line-derecha ()
-  (let ((lang (or (+my/version-lenguaje) (format-mode-line mode-name)))
-        (rama (+my/rama-git)))
+;; Right side: language (with version if known) and git branch.
+(defun +my/mode-line-right ()
+  (let ((lang (or (+my/language-version) (format-mode-line mode-name)))
+        (branch (+my/git-branch)))
     (concat " "
             (propertize lang 'face 'font-lock-keyword-face)
-            (when rama (concat "  " (propertize (concat "\ue725 " rama) 'face 'success)))
+            (when branch (concat "  " (propertize (concat " " branch) 'face 'success)))
             " ")))
 
-;; Lado izquierdo clásico: -UU-:----  archivo   Top L12  <N>
-(defvar +my/mode-line-izquierda
+;; Classic left side: -UU-:----  file   Top L12  <N>
+(defvar +my/mode-line-left
   '("%e" mode-line-front-space mode-line-mule-info mode-line-client
     mode-line-modified mode-line-remote "  "
     mode-line-buffer-identification "   " mode-line-position
     evil-mode-line-tag mode-line-misc-info))
 
 (defun +my/mode-line ()
-  "Barra estilo Emacs clásico, rellena con guiones, con el lenguaje y la rama a la derecha."
-  (let* ((izq (format-mode-line +my/mode-line-izquierda))
-         (der (+my/mode-line-derecha))
-         (ancho (- (window-total-width) (string-width izq) (string-width der) 3)))
-    (concat izq " " (make-string (max 1 ancho) ?-) der "--")))
+  "Classic Emacs-style bar, padded with dashes, with language and branch on the right."
+  (let* ((left (format-mode-line +my/mode-line-left))
+         (right (+my/mode-line-right))
+         (width (- (window-total-width) (string-width left) (string-width right) 3)))
+    (concat left " " (make-string (max 1 width) ?-) right "--")))
 
-;; evil no debe insertar su etiqueta por su cuenta (ya va en la parte izquierda).
+;; evil must not insert its tag on its own (it is already on the left side).
 (setq evil-mode-line-format nil)
-;; Doom vacía la barra durante el arranque; si queda vacía, la restaura con este valor.
+;; Doom empties the bar during startup; if it ends up empty, restore it with this value.
 (put 'mode-line-format 'initial-value '((:eval (+my/mode-line))))
 (setq-default mode-line-format '((:eval (+my/mode-line))))
 
-;; C-n / C-p como en nvim-cmp: si el menú está abierto, se mueven por las
-;; opciones; si no, lo abren con TODAS las fuentes (LSP + palabras + rutas),
-;; no solo con palabras del buffer como hace Doom por defecto.
-(defun +my/completar-o-siguiente (&optional n)
+;; C-n / C-p like nvim-cmp: if the menu is open, they move through the
+;; candidates; if not, they open it with ALL sources (LSP + words + paths),
+;; not just buffer words as Doom does by default.
+(defun +my/complete-or-next (&optional n)
   (interactive "p")
   (if (bound-and-true-p corfu--candidates)
       (corfu-next n)
     (completion-at-point)))
 
-(defun +my/completar-o-anterior (&optional n)
+(defun +my/complete-or-previous (&optional n)
   (interactive "p")
   (if (bound-and-true-p corfu--candidates)
       (corfu-previous n)
@@ -380,11 +381,11 @@ Se obtiene en segundo plano (respeta .tool-versions de asdf)."
 
 (map! :after corfu
       :map corfu-mode-map
-      :i "C-n" #'+my/completar-o-siguiente
-      :i "C-p" #'+my/completar-o-anterior)
+      :i "C-n" #'+my/complete-or-next
+      :i "C-p" #'+my/complete-or-previous)
 
-;; Gleam: modo con tree-sitter y su servidor de lenguaje integrado (gleam lsp).
-;; La primera vez: M-x gleam-ts-install-grammar
+;; Gleam: tree-sitter mode with its built-in language server (gleam lsp).
+;; First time: M-x gleam-ts-install-grammar
 (use-package! gleam-ts-mode
   :mode ("\\.gleam\\'" . gleam-ts-mode)
   :hook (gleam-ts-mode . eglot-ensure)
@@ -393,44 +394,48 @@ Se obtiene en segundo plano (respeta .tool-versions de asdf)."
     (add-to-list 'eglot-server-programs '(gleam-ts-mode . ("gleam" "lsp")))))
 
 ;;; ------------------------------------------------------------------
-;;; HTML / HEEx: cerrar etiquetas automáticamente
+;;; HTML / HEEx: close tags automatically
 ;;; ------------------------------------------------------------------
 
-;; .heex/.leex/.eex con web-mode: cierra etiquetas solo y tiene emmet
-;; (escribe  h1  y presiona TAB  ->  <h1></h1>).
+;; .heex/.leex/.eex with web-mode: closes tags on its own and has emmet
+;; (type  h1  and press TAB  ->  <h1></h1>).
 (add-to-list 'auto-mode-alist '("\\.[hl]?eex\\'" . web-mode))
 (after! web-mode
   (add-to-list 'web-mode-engines-alist '("elixir" . "\\.[hl]?eex\\'"))
-  (setq web-mode-auto-close-style 2        ; cierra al escribir > y también </
+  (setq web-mode-auto-close-style 2        ; closes when typing > and also </
         web-mode-enable-auto-closing t
         web-mode-enable-auto-pairing t))
 
-;; Dentro de ~H"""...""" en archivos .ex: al escribir > se agrega el cierre.
+;; Inside ~H"""...""" in .ex files: typing > adds the closing tag.
 ;;   <h1>  ->  <h1>|</h1>      <.button class="x">  ->  <.button class="x">|</.button>
-(defvar +my/tags-vacios
+(defvar +my/void-tags
   '("area" "base" "br" "col" "embed" "hr" "img" "input" "link" "meta"
     "source" "track" "wbr")
-  "Etiquetas HTML que no llevan cierre.")
+  "HTML tags that have no closing tag.")
 
-(defun +my/cerrar-tag ()
-  "Insertar > y, si se acaba de abrir una etiqueta, agregar su cierre."
+(defun +my/close-tag ()
+  "Insert > and, if a tag was just opened, add its closing tag."
   (interactive)
   (insert ">")
-  (when (and (nth 3 (syntax-ppss))       ; solo dentro de un string/sigil
+  (when (and (nth 3 (syntax-ppss))       ; only inside a string/sigil
              (save-excursion
                (looking-back "<\\([A-Za-z.][A-Za-z0-9._:-]*\\)\\(?:\\s-[^<>]*\\)?>"
                              (line-beginning-position))))
     (let ((tag (match-string 1)))
       (unless (or (eq (char-before (1- (point))) ?/)          ; <br/>
-                  (member (downcase tag) +my/tags-vacios))
+                  (member (downcase tag) +my/void-tags))
         (save-excursion (insert "</" tag ">"))))))
 
 (map! :after elixir-mode
       :map elixir-mode-map
-      :i ">" #'+my/cerrar-tag)
+      :i ">" #'+my/close-tag)
 
-(defun +my/tab-bar-usuario ()
-  "usuario@host a la derecha de la tab-bar."
+;;; ------------------------------------------------------------------
+;;; Top tab-bar: numbered tabs, no buttons, user@host on the right
+;;; ------------------------------------------------------------------
+
+(defun +my/tab-bar-user ()
+  "user@host on the right side of the tab-bar."
   (propertize (format " %s@%s " (user-login-name)
                       (car (split-string (system-name) "\\.")))
               'face 'tab-bar-tab-inactive))
@@ -440,5 +445,5 @@ Se obtiene en segundo plano (respeta .tool-versions de asdf)."
       tab-bar-close-button-show nil
       tab-bar-new-button-show nil
       tab-bar-format '(tab-bar-format-tabs tab-bar-separator
-                       tab-bar-format-align-right +my/tab-bar-usuario))
+                       tab-bar-format-align-right +my/tab-bar-user))
 (tab-bar-mode 1)

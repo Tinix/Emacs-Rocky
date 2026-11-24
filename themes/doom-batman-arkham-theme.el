@@ -1,14 +1,14 @@
-;;; doom-batman-arkham-theme.el --- Batman "Arkham" para Doom -*- lexical-binding: t; no-byte-compile: t; -*-
+;;; doom-batman-arkham-theme.el --- Batman "Arkham" for Doom -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;
-;; Port de la paleta "arkham" de the-coding-doggo/batman.nvim
-;; (lua/batman/palette.lua y colors/batman.lua).
+;; Port of the "arkham" palette from the-coding-doggo/batman.nvim
+;; (lua/batman/palette.lua and colors/batman.lua).
 ;;
 ;;; Code:
 
 (require 'doom-themes)
 
 (def-doom-theme doom-batman-arkham
-  "Batman Arkham: fondo azul noche con acentos dorados."
+  "Batman Arkham: night-blue background with golden accents."
   :family 'doom-batman
   :background-mode 'dark
 
@@ -43,7 +43,7 @@
    (accent     '("#d4a04a" "#d7af5f"   "yellow"))
    (rust       '("#6a4a42" "#5f5f5f"   "red"))
 
-   ;; Clases de sintaxis, como en batman.nvim
+   ;; Syntax classes, as in batman.nvim
    (highlight      accent)
    (vertical-bar   base3)
    (selection      dark-blue)
@@ -72,7 +72,7 @@
    (modeline-bg          base3)
    (modeline-bg-inactive bg))
 
-  ;;;; Ajustes de caras
+  ;;;; Face tweaks
   (((line-number &override) :foreground base4)
    ((line-number-current-line &override) :foreground accent)
    ((font-lock-comment-face &override) :slant 'italic)
@@ -92,7 +92,7 @@
    (doom-modeline-buffer-file :inherit 'mode-line-buffer-id :weight 'bold)
    (doom-modeline-buffer-path :inherit 'mode-line-emphasis :weight 'bold)
    (doom-modeline-buffer-project-root :foreground accent :weight 'bold)
-   ;;;; completado (vertico/corfu)
+   ;;;; completion (vertico/corfu)
    (vertico-current :background dark-blue :foreground accent)
    (corfu-current :background dark-blue :foreground accent)
    ;;;; treemacs / dired
