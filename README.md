@@ -10,7 +10,7 @@ My [Doom Emacs](https://github.com/doomemacs/doomemacs) configuration, largely p
 Requires Emacs 30 and Doom Emacs installed in `~/.config/emacs`.
 
 ```sh
-git clone https://github.com/Tinix/emacs-rocks.git ~/.config/doom
+git clone https://github.com/Tinix/Emacs-Rocky.git ~/.config/doom
 ~/.config/emacs/bin/doom sync
 ```
 
