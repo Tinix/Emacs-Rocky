@@ -1,5 +1,7 @@
 # Emacs Rocky
 
+[![License: MIT](https://img.shields.io/github/license/Tinix/Emacs-Rocky)](LICENSE)
+
 My [Doom Emacs](https://github.com/doomemacs/doomemacs) configuration, largely ported from my Neovim setup ([nvim-rock](https://github.com/Tinix/nvim-rock)).
 
 > **Heads up: this config is built for the Dvorak keyboard layout.**
