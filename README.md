@@ -6,6 +6,8 @@ My [Doom Emacs](https://github.com/doomemacs/doomemacs) configuration, largely p
 
 ![Emacs Rocky screenshot](assets/screenshot.png)
 
+![Emacs Rocky with vterm](assets/screenshot-vterm.png)
+
 > **Heads up: this config is built for the Dvorak keyboard layout.**
 > The basic movement keys are remapped (see [Dvorak layout](#dvorak-layout)). If you type on QWERTY, remove or adapt the Dvorak section in `config.el` before using it.
 
