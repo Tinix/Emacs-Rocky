@@ -194,3 +194,7 @@ In **magit-blame**, `t` / `n` move down / up. In **interactive rebase**, `t` / `
 | `emacs --debug-init` | Start Emacs showing the full error if something in the config fails |
 
 `config.el` changes don't need `doom sync`; just restart Emacs.
+
+## License
+
+[MIT](LICENSE)
