@@ -1,4 +1,4 @@
-# emacs-rocks
+# Emacs Rocky
 
 My [Doom Emacs](https://github.com/doomemacs/doomemacs) configuration, largely ported from my Neovim setup ([nvim-rock](https://github.com/Tinix/nvim-rock)).
 
