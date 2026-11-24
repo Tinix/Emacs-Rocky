@@ -4,6 +4,8 @@
 
 My [Doom Emacs](https://github.com/doomemacs/doomemacs) configuration, largely ported from my Neovim setup ([nvim-rock](https://github.com/Tinix/nvim-rock)).
 
+![Emacs Rocky screenshot](assets/screenshot.png)
+
 > **Heads up: this config is built for the Dvorak keyboard layout.**
 > The basic movement keys are remapped (see [Dvorak layout](#dvorak-layout)). If you type on QWERTY, remove or adapt the Dvorak section in `config.el` before using it.
 
