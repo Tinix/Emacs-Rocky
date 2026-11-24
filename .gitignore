@@ -1,0 +1,15 @@
+# Emacs
+*~
+\#*\#
+.#*
+*.elc
+*.eln
+auto-save-list/
+eln-cache/
+
+# Backups
+*.bak
+*.bak[0-9]*
+
+# OS
+.DS_Store
